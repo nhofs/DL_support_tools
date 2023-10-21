@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Initialize variables for login
-let user = "parrishwhitaker@gmail.com";
-let pass = "dl78ed1095d4c60c74a23fc407f54b12d70f70409312937c3c4db391aa8957";
+let user = "nhofstee+testacc@doorloop.com";
+let pass = "testacc";
 
 // Create axios instance for both authentication and token
 const dlToken = axios.create({

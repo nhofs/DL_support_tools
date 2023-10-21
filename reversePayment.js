@@ -1,21 +1,9 @@
 import getToken, { user, pass, dlAuth } from "./login.js";
 // turn off reversal notifications before running this script
 //change the two variables below to match the payment you want to reverse + the date you want the reversal to appear on the ledger
-let paymentID = "64f22bc2535daa74daa1cf60";
+let paymentId = "64f22bc2535daa74daa1cf60";
 let reverseDate = "2023-09-08";
-let pmToken = "pm_1NlbyFGES5MQAgehR9bffHc2";
-let pyTxnId = "ch_3NlbyhGES5MQAgeh0i7ULC8O";
-let bankNum = "8268";
-let merchAccount = "6388fd8898c8715a26134587";
-let payMethod = "CARD";
-// payMethod is CARD or ECHECK
-let expDate = "0427";
-// if payMethod is ECHECK use bankRout and replace the expiration attribute with the routing attribute
-
-// let bankRout = "110000000";
-//routing: bankRout,
-
-let payFee = "31.8";
+let fullURL = "/lease-payments/" + paymentId;
 let paymentMemo =
   // use this one for normal reversal
   // "This payment was declined by the payer’s bank. Please have them reach out to their banking institution for more information.";
@@ -27,23 +15,34 @@ let paymentMemo =
   //use this one for fraud refund
   "Transaction refunded back to cardholder due to a merchant team decision.";
 
+async function getPayment() {
+  // Get token for login and request merchant account endpoint
+  const token = await getToken(user, pass);
+  let response = await dlAuth.get(fullURL, {
+    headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+  });
+  console.log(response.data) + "payment data";
+  return response.data;
+}
+let payment = await getPayment();
+
 async function reversePayment() {
   const payload = {
-    leasePayment: paymentID,
+    leasePayment: paymentId,
     date: reverseDate,
     memo: paymentMemo,
     paymentMethod: "EPAY",
     ePayInfo: {
-      fee: payFee,
-      method: payMethod,
-      token: pmToken,
-      txnId: pyTxnId,
-      number: bankNum,
-      expiration: expDate,
-      merchantAccount: merchAccount,
-      ipAddress: "69.112.107.176",
+      method: payment.ePayInfo.method,
+      token: payment.ePayInfo.token,
+      txnId: payment.ePayInfo.txnId,
+      number: payment.ePayInfo.number,
+      routing: payment.ePayInfo.routing,
+      expiration: payment.ePayInfo.expiration,
+      merchantAccount: payment.ePayInfo.merchantAccount,
+      ipAddress: payment.ePayInfo.ipAddress,
       termsAndConditionsAccepted: true,
-      termsAndConditionsVersion: "1.0",
+      termsAndConditionsVersion: payment.ePayInfo.termsAndConditionsVersion,
       status: "FAILED",
     },
   };
