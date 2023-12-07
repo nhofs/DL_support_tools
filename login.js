@@ -15,7 +15,6 @@ const dlAuth = axios.create({
   baseURL: "https://beta.doorloop.com/api",
   timeout: 5000,
   headers: {
-    Authorization: `Bearer ${getToken(user, pass)}`,
     Accept: "application/json",
     "user-agent": "Mozilla/5.0",
   },
