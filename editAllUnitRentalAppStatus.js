@@ -1,16 +1,16 @@
 // this should work but we might want to edit it to go faster if unit count is less than 50
 // to use, change activeListing below to either true or false
 import getToken, { user, pass, dlAuth } from "./login.js";
-let newData = {
-  rentalApplicationListing: { activeListing: true },
+const newData = {
+  rentalApplicationListing: { activeListing: false },
 };
-let keyWord = newData.rentalApplicationListing.activeListing
+const keyWord = newData.rentalApplicationListing.activeListing
   ? "enabled"
   : "disabled";
 const token = await getToken(user, pass);
 async function getUnits(pageNumber) {
   let unitsListURL =
-    "/reports/rent-roll/?&page_size=1000&page_number=" + pageNumber;
+    "/reports/rent-roll/?&page_size=50&page_number=" + pageNumber;
   // Get token for login and request merchant account endpoint
   let response = await dlAuth.get(unitsListURL, {
     headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },

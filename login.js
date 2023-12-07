@@ -1,19 +1,19 @@
 import axios from "axios";
 
 // Initialize variables for login
-let user = "nhofstee+testacc@doorloop.com";
-let pass = "testacc";
+let user = "";
+let pass = "";
 
 // Create axios instance for both authentication and token
 const dlToken = axios.create({
   baseURL: "https://beta.doorloop.com/api/auth/",
-  timeout: 5000,
+  timeout: 10000,
   headers: { Accept: "application/json", "user-agent": "Mozilla/4.0" },
 });
 
 const dlAuth = axios.create({
   baseURL: "https://beta.doorloop.com/api",
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     Accept: "application/json",
     "user-agent": "Mozilla/5.0",
