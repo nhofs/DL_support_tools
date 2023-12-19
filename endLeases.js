@@ -1,5 +1,5 @@
 import getToken, { user, pass, dlAuth } from "./login.js";
-let propID = "62ebb879ed608065173dcd6d";
+let propID = "64cba93bd4d94d1814435e5c";
 let leaseListURL =
   "/leases/?&page_size=50&page_number=1&filter_property=" +
   propID +
@@ -25,8 +25,8 @@ async function endLeases() {
     let leaseID = each["id"];
     let payload = {
       leaseId: leaseID,
-      movedOutAt: each["end"],
-      noticeToMoveOutAt: each["end"],
+      movedOutAt: each["end"] || "2023-12-19",
+      noticeToMoveOutAt: each["end"] || "2023-12-19",
     };
     // Get token for login and request merchant account endpoint
     const token = await getToken(user, pass);
