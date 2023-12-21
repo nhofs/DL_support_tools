@@ -6,13 +6,13 @@ let pass = "testacc";
 
 // Create axios instance for both authentication and token
 const dlToken = axios.create({
-  baseURL: "https://dld-3297.doorloop.info/api/auth/",
+  baseURL: "https://dev-env.doorloop.info/api/auth/",
   timeout: 5000,
   headers: { Accept: "application/json", "user-agent": "Mozilla/4.0" },
 });
 
 const dlAuth = axios.create({
-  baseURL: "https://dld-3297.doorloop.info/api",
+  baseURL: "https://dev-env.doorloop.info/api",
   timeout: 5000,
   headers: {
     Authorization: `Bearer ${getToken(user, pass)}`,
