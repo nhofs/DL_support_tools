@@ -7,7 +7,7 @@ appendFile("rentalAppStatusUpdate.txt", user + "\n", (err) => {
 });
 
 //change the variables below to change the status of occupied units for the rental applications
-const firstPageNumber = 16;
+const firstPageNumber = 1; //increase by 5 after running once if need to do more units
 const newData = {
   rentalApplicationListing: { activeListing: false },
 };
@@ -17,7 +17,7 @@ const keyWord = newData.rentalApplicationListing.activeListing
   ? "enabled"
   : "disabled";
 const token = await getToken(user, pass);
-
+let vacantUnitsCount = 0;
 async function getUnits(pageNumber) {
   let unitsListURL =
     "/reports/rent-roll/?&page_size=50&page_number=" + pageNumber;
@@ -62,7 +62,7 @@ async function getInfoAndEditAllRental(unitList) {
   for (let each of unitList) {
     if (each.leaseStatus == "VACANT") {
       console.log("skipping vacant unit " + each["unitId"]);
-      unitsRemaining--;
+      vacantUnitsCount++;
       appendFile(
         "rentalAppStatusUpdate.txt",
         "skipping vacant unit " + each["unitId"] + "\n",
@@ -91,6 +91,9 @@ async function getInfoAndEditAllRental(unitList) {
           " units remaining out of " +
           unitList.length +
           " units" +
+          "\n" +
+          vacantUnitsCount +
+          " vacant units skipped" +
           "\n",
         (err) => {
           if (err) throw err;
@@ -99,9 +102,7 @@ async function getInfoAndEditAllRental(unitList) {
       await delay(2600); // delay for 2.6 seconds between loops bc rate limiting is fun
     }
   }
-  console.log(
-    "rental applications for " + unitList.length + " units " + keyWord
-  );
+  console.log("rental applications for " + unitList.length + " units updated");
 }
 console.log(unitList.length + " units found");
 getInfoAndEditAllRental(unitList);
