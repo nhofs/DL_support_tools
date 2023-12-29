@@ -11,6 +11,7 @@ const firstPageNumber = 1; //increase by 5 after running once if need to do more
 const newData = {
   rentalApplicationListing: { activeListing: false },
 };
+const skipVacantUnits = true; // set this to true if you want to skip vacant units, false if not
 //change the variables below to change the status of occupied units for the rental applications
 
 const keyWord = newData.rentalApplicationListing.activeListing
@@ -60,7 +61,7 @@ async function editRental(data, unitId, url) {
 async function getInfoAndEditAllRental(unitList) {
   let unitsRemaining = unitList.length;
   for (let each of unitList) {
-    if (each.leaseStatus == "VACANT") {
+    if (skipVacantUnits && each.leaseStatus == "VACANT") {
       console.log("skipping vacant unit " + each["unitId"]);
       vacantUnitsCount++;
       appendFile(
