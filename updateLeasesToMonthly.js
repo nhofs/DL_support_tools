@@ -7,10 +7,9 @@ let leaseListURL =
   "&filter_status=ACTIVE";
 
 const newData = { term: "AtWill" };
-
+const token = await getToken(user, pass);
 async function getLeases() {
   // Get token for login and request merchant account endpoint
-  const token = await getToken(user, pass);
   let response = await dlAuth.get(leaseListURL, {
     headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
   });
@@ -24,7 +23,6 @@ async function updateToMonthly() {
   for (let each of leaseList) {
     let leaseID = each["id"];
     let URL = "/leases/" + leaseID;
-    const token = await getToken(user, pass);
     let response = await dlAuth.get(URL, {
       headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
     });
